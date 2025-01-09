@@ -307,14 +307,15 @@ fig_params.update_layout(
     margin=dict(l=10, r=10, t=20, b=10),
     plot_bgcolor='rgba(0,0,0,0)',
     paper_bgcolor='rgba(0,0,0,0)',
-    font_color='#f472b6',
+    font_color='#ffffff',  # Changed to white
     showlegend=True,
     legend=dict(
         orientation="h",
         yanchor="bottom",
         y=1.02,
         xanchor="right",
-        x=1
+        x=1,
+        font=dict(color='#ffffff')  # Added white color for legend text
     ),
     xaxis=dict(
         showgrid=True,
@@ -332,6 +333,7 @@ fig_params.update_layout(
     )
 )
 st.plotly_chart(fig_params, use_container_width=True, config={'displayModeBar': False})
+
 
 # Secondary Alerts Section
 st.header('Other Alerts')
