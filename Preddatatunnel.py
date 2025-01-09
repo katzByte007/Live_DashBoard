@@ -193,9 +193,48 @@ with col2:
         "82%",
         "↓ 3% this week"
     )
+# Traffic Flow Analysis
+st.header('Traffic Flow')
+hourly_data = pd.DataFrame({
+    'hour': ['06:00', '07:00', '08:00', '09:00', '10:00'],
+    'vehicles': [120, 350, 580, 450, 280]
+})
 
-# Traffic Flow Analysis remains the same...
-[Previous traffic flow code remains unchanged]
+fig_traffic = px.area(hourly_data, x='hour', y='vehicles')
+fig_traffic.update_layout(
+    height=180,
+    margin=dict(l=5, r=5, t=5, b=5),
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    font_color='#f472b6',
+    showlegend=False,
+    xaxis=dict(
+        showgrid=True,
+        gridwidth=1,
+        gridcolor='rgba(244, 114, 182, 0.1)',
+        linecolor='rgba(244, 114, 182, 0.2)',
+        fixedrange=True
+    ),
+    yaxis=dict(
+        showgrid=True,
+        gridwidth=1,
+        gridcolor='rgba(244, 114, 182, 0.1)',
+        linecolor='rgba(244, 114, 182, 0.2)',
+        fixedrange=True
+    )
+)
+fig_traffic.update_traces(
+    fill='tozeroy',
+    line=dict(color='#f472b6'),
+    fillcolor='rgba(244, 114, 182, 0.2)'
+)
+
+st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+st.plotly_chart(fig_traffic, use_container_width=True, config={
+    'displayModeBar': False,
+    'responsive': True
+})
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Refresh button
 st.button('🔄 Refresh Data')
