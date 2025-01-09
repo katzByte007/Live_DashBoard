@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Complete CSS with all styles
+# [Previous CSS styles remain unchanged]
 st.markdown("""
     <style>
         /* Modern gradient background */
@@ -161,15 +161,8 @@ hourly_data = pd.DataFrame({
             700, 680, 720, 750, 780, 750, 700, 650, 620, 600, 580, 570],
     'no2': [150, 145, 140, 135, 140, 150, 180, 200, 170, 160, 150, 155,
             165, 160, 170, 180, 190, 180, 160, 150, 145, 140, 135, 130],
-    'power': [1500, 1450, 1400, 1350, 1400, 1500, 2000, 2500, 2200, 1800, 1700, 1750,
-              1850, 1800, 1900, 2000, 2100, 2000, 1800, 1600, 1500, 1400, 1350, 1300]
-})
-
-# Prediction data for future hours
-prediction_data = pd.DataFrame({
-    'time': pd.date_range(start='2024-01-09 00:00', periods=6, freq='H').strftime('%H:%M'),
-    'predicted': [2100, 2300, 2600, 2400, 2200, 2000],
-    'confidence': [0.85, 0.82, 0.78, 0.75, 0.72, 0.70]
+    'jetfan_speed': [65, 60, 55, 50, 55, 65, 85, 95, 85, 75, 70, 75,
+                     80, 75, 80, 85, 90, 85, 75, 70, 65, 60, 55, 50]
 })
 
 # Critical Alerts Section at top
@@ -185,13 +178,9 @@ st.markdown('</div>', unsafe_allow_html=True)
 # Sample data with updated values
 tunnel_data = {
     "totalVehicles": 1254,
-    "maxExhaustPower": "2500 kW",
     "maxTemperature": "35°C",
     "co2Level": "850 ppm",
     "no2Level": "180 µg/m³",
-    "lightingPower": "450 kW",
-    "jetfanPower": "850 kW",
-    "dgPower": "550 kW",
     "totalPower": "1850 kW",
     "predictedExhaustPower": "65%",
     "predictedCongestion": "75%",
@@ -199,15 +188,14 @@ tunnel_data = {
     "predictedMaintenance": "Others"
 }
 
-# Current Stats Section with air quality metrics
+# Current Stats Section with air quality metrics (removed Exhaust Power)
 st.header('Current Statistics')
-cols = st.columns(6)
+cols = st.columns(5)
 metrics = [
     ("Total Vehicles", tunnel_data["totalVehicles"], "↑ 12%"),
     ("Temperature", tunnel_data["maxTemperature"], "↑ 5%"),
     ("CO₂ Level", tunnel_data["co2Level"], "↑ 15%"),
     ("NO₂ Level", tunnel_data["no2Level"], "↑ 8%"),
-    ("Exhaust Power", tunnel_data["maxExhaustPower"], "→ 0%"),
     ("Total Power", tunnel_data["totalPower"], "↓ 8%")
 ]
 for col, (label, value, delta) in zip(cols, metrics):
@@ -249,7 +237,7 @@ for col, (label, value, conf) in zip(cols, predictions):
     with col:
         st.metric(label, value, conf)
 
-# Traffic Flow Analysis with mobile optimization
+# Traffic Flow Analysis
 st.header('Traffic Flow Analysis')
 fig_traffic = px.area(hourly_data, x='hour', y='vehicles')
 fig_traffic.update_layout(
@@ -281,22 +269,53 @@ fig_traffic.update_traces(
 )
 st.plotly_chart(fig_traffic, use_container_width=True, config={'displayModeBar': False})
 
-# Power Prediction graph with mobile optimization
-st.header('Predicted vs Actual Exhaust Power')
-fig_power = go.Figure()
-fig_power.add_trace(go.Scatter(
-    x=prediction_data['time'],
-    y=prediction_data['predicted'],
-    name='Predicted Power',
+# Jet Fan Speed vs Parameters graph
+st.header('Jet Fan Speed vs Parameters')
+fig_params = go.Figure()
+
+# Add traces for each parameter
+fig_params.add_trace(go.Scatter(
+    x=hourly_data['hour'],
+    y=hourly_data['jetfan_speed'],
+    name='Jet Fan Speed (%)',
     line=dict(color='#9333ea', width=2)
 ))
-fig_power.update_layout(
-    height=250,
+
+fig_params.add_trace(go.Scatter(
+    x=hourly_data['hour'],
+    y=hourly_data['vehicles'],
+    name='Vehicles',
+    line=dict(color='#f472b6', width=2)
+))
+
+fig_params.add_trace(go.Scatter(
+    x=hourly_data['hour'],
+    y=hourly_data['co2'].divide(10),  # Scaled for better visualization
+    name='CO₂ (ppm/10)',
+    line=dict(color='#60a5fa', width=2)
+))
+
+fig_params.add_trace(go.Scatter(
+    x=hourly_data['hour'],
+    y=hourly_data['no2'],
+    name='NO₂ (µg/m³)',
+    line=dict(color='#4ade80', width=2)
+))
+
+fig_params.update_layout(
+    height=300,
     margin=dict(l=10, r=10, t=20, b=10),
     plot_bgcolor='rgba(0,0,0,0)',
     paper_bgcolor='rgba(0,0,0,0)',
     font_color='#f472b6',
-    showlegend=False,
+    showlegend=True,
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ),
     xaxis=dict(
         showgrid=True,
         gridwidth=1,
@@ -312,7 +331,7 @@ fig_power.update_layout(
         fixedrange=True
     )
 )
-st.plotly_chart(fig_power, use_container_width=True, config={'displayModeBar': False})
+st.plotly_chart(fig_params, use_container_width=True, config={'displayModeBar': False})
 
 # Secondary Alerts Section
 st.header('Other Alerts')
