@@ -241,7 +241,7 @@ st.header('Predictive Insights')
 cols = st.columns(4)
 predictions = [
     ("Required Exhaust Power", tunnel_data["predictedExhaustPower"], "89% confidence"),
-    ("Expected Congestion", tunnel_data["predictedCongestion"], "85% confidence"),
+    ("Expected Traffic", tunnel_data["predictedCongestion"], "85% confidence"),
     ("Air Quality Forecast", tunnel_data["predictedAirQuality"], "92% confidence"),
     ("Next Maintenance", tunnel_data["predictedMaintenance"], "87% confidence")
 ]
