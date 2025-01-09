@@ -193,10 +193,10 @@ tunnel_data = {
     "jetfanPower": "850 kW",
     "dgPower": "550 kW",
     "totalPower": "1850 kW",
-    "predictedExhaustPower": "2800 kW",
+    "predictedExhaustPower": "65%",
     "predictedCongestion": "75%",
     "predictedAirQuality": "Moderate",
-    "predictedMaintenance": "4 days"
+    "predictedMaintenance": "Others"
 }
 
 # Current Stats Section with air quality metrics
@@ -240,10 +240,10 @@ st.markdown("""
 st.header('Predictive Insights')
 cols = st.columns(4)
 predictions = [
-    ("Required Exhaust Power", tunnel_data["predictedExhaustPower"], "89% confidence"),
+    ("Jet Fan Speed", tunnel_data["predictedExhaustPower"], "89% confidence"),
     ("Expected Traffic", tunnel_data["predictedCongestion"], "85% confidence"),
     ("Air Quality Forecast", tunnel_data["predictedAirQuality"], "92% confidence"),
-    ("Next Maintenance", tunnel_data["predictedMaintenance"], "87% confidence")
+    ("--", tunnel_data["predictedMaintenance"], "--")
 ]
 for col, (label, value, conf) in zip(cols, predictions):
     with col:
