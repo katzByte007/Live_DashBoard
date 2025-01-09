@@ -176,7 +176,7 @@ prediction_data = pd.DataFrame({
 st.markdown('<div class="top-alerts">', unsafe_allow_html=True)
 critical_alerts = [
     "🚨 HIGH PRIORITY: CO2 levels approaching threshold in Section B",
-    "⚠️ URGENT: Predicted power surge in next 30 minutes"
+    "⚠️ URGENT: Traffic Jam "
 ]
 for alert in critical_alerts:
     st.error(alert)
@@ -318,7 +318,7 @@ st.plotly_chart(fig_power, use_container_width=True, config={'displayModeBar': F
 st.header('Other Alerts')
 alerts = [
     "⚠️ Forecast: Air quality may deteriorate in Section C - Consider increasing ventilation",
-    "🔧 Maintenance Alert: Fan system efficiency predicted to drop below threshold in 4 days"
+    "🔧 Maintenance Alert: Low illumination "
 ]
 for alert in alerts:
     st.warning(alert)
