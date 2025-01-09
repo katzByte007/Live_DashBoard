@@ -176,7 +176,7 @@ prediction_data = pd.DataFrame({
 st.markdown('<div class="top-alerts">', unsafe_allow_html=True)
 critical_alerts = [
     "🚨 HIGH PRIORITY: CO2 levels approaching threshold in Section B",
-    "⚠️ URGENT: Traffic Jam "
+    "⚠️ URGENT: Suspected Traffic Jam inside Tunnel"
 ]
 for alert in critical_alerts:
     st.error(alert)
